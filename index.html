@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <style>
+      body, body * {
+        font-family: monospace;
+      }
+	  button {
+		  min-width: 4em;
+		  height: 4em;
+	  }
+	  button, .device, #status, .track, #meter {
+		  margin-bottom: 1em;
+		  white-space: pre;
+	  }
+	  #meter {
+		  width: 10em;
+		  height: 1em;
+		  border: 1px solid black;
+	  }
+	  #bar {
+		  height: 100%;
+		  background: green;
+	  }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "webpack-dev-server index.js -o bundle.js --mode development -w",
+    "build": "webpack index.js -o bundle.js --mode production"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  }
+}
