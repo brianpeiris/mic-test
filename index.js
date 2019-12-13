@@ -69,7 +69,9 @@ class Root extends React.Component {
     await this.stopAnalyser();
     this.setState({ tracks: [] });
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: deviceId } });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: { deviceId: deviceId }
+      });
       this.setState({ status: "got device" });
       this.setState({ tracks: stream.getAudioTracks() });
       this.startAnalyser(stream);
@@ -81,32 +83,35 @@ class Root extends React.Component {
   render() {
     const track = this.state.track;
     return (
-      <div>
+      <>
+        <h1>mic test</h1>
         <div id="status">{this.state.status}</div>
         <div id="meter">
           <div id="bar" style={{ width: `${this.state.meter * 100}%` }} />
         </div>
         {this.state.tracks.map((track, i) => (
           <div key={i} className="track">
-            id: {track.id} <br />
-            label: {track.label} <br />
-            kind: {track.kind} <br />
-            enabled: {track.enabled} <br />
-            muted: {track.muted} <br />
-            readyState: {track.readyState} <br />
+            <label>id:</label> {track.id} <br />
+            <label>label:</label> {track.label} <br />
+            <label>kind:</label> {track.kind} <br />
+            <label>enabled:</label> {"" + track.enabled} <br />
+            <label>muted:</label> {"" + track.muted} <br />
+            <label>readyState:</label> {track.readyState} <br />
           </div>
         ))}
         <button onClick={() => this.getMedia()}>get media</button>
         {this.state.devices.map((device, i) => (
-          <div key={i} className="device">
-            <button onClick={() => this.useDevice(device.deviceId)}>use</button> <br />
-            label: {device.label} <br />
-            kind: {device.kind} <br />
-            group: {device.groupId} <br />
-            device: {device.deviceId} <br />
+          <div className="device">
+            <button onClick={() => this.useDevice(device.deviceId)}>use</button>
+            <div key={i} className="deviceInfo">
+              <label>label:</label> {device.label} <br />
+              <label>kind:</label> {device.kind} <br />
+              <label>group:</label> {device.groupId} <br />
+              <label>device:</label> {device.deviceId} <br />
+            </div>
           </div>
         ))}
-      </div>
+      </>
     );
   }
 }

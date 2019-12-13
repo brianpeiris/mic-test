@@ -13,12 +13,18 @@
         min-width: 4em;
         height: 4em;
       }
-      button,
-      .device,
-      #status,
-      .track,
-      #meter {
-        margin-bottom: 1em;
+      .device {
+        display: flex;
+        padding: 0.5em;
+        align-items: center;
+      }
+      .device:nth-child(odd) {
+        background: #eee;
+      }
+      .deviceInfo {
+        margin-left: 1em;
+      }
+      body * {
         white-space: pre;
       }
       #meter {
@@ -29,6 +35,14 @@
       #bar {
         height: 100%;
         background: green;
+      }
+      #root > * {
+        margin-bottom: 1em;
+      }
+      label {
+        width: 7em;
+        text-align: right;
+        display: inline-block;
       }
     </style>
   </head>
