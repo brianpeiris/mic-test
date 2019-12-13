@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 
 class Root extends React.Component {
   constructor(props) {
@@ -116,4 +117,7 @@ class Root extends React.Component {
   }
 }
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+const root = document.createElement("div");
+root.id = "root";
+document.body.append(root);
+ReactDOM.render(<Root />, root);
