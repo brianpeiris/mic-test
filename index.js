@@ -34,7 +34,7 @@ class Root extends React.Component {
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.setState({ devices });
       this.setState({ status: "got media" });
-      // We need to getUserMedia media to enumerateDevices with labels.
+      // We need to call getUserMedia media in order to enumerateDevices with labels.
       // Then we have to stop the audio track, since Firefox thinks we're still using
       // the stream if we try to switch devices later.
       for (const track of stream.getAudioTracks()) {
