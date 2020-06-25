@@ -109,7 +109,6 @@ class Root extends React.Component {
             <button onClick={() => this.useDevice(device.deviceId)}>use</button>
             <div key={i} className="deviceInfo">
               <label>label:</label> {device.label} <br />
-              <label>kind:</label> {device.kind} <br />
             </div>
           </div>
         ))}
