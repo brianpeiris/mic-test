@@ -34,3 +34,6 @@ label {
   text-align: right;
   display: inline-block;
 }
+video {
+  width: 200px;
+}

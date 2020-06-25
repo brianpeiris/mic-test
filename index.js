@@ -9,6 +9,7 @@ class Root extends React.Component {
       status: "",
       devices: [],
       tracks: [],
+      constraints: [],
       meter: 0
     };
   }
@@ -28,11 +29,14 @@ class Root extends React.Component {
       this.ctx.resume();
     });
   }
+  getConstraints() {
+    this.setState({ constraints: navigator.mediaDevices.getSupportedConstraints() });
+  }
   async getMedia() {
     this.setState({ status: "getting media" });
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const devices = await navigator.mediaDevices.enumerateDevices();
+      const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      const devices = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === "audioinput");
       this.setState({ devices });
       this.setState({ status: "got media" });
       // We need to call getUserMedia media in order to enumerateDevices with labels.
@@ -92,23 +96,27 @@ class Root extends React.Component {
         </div>
         {this.state.tracks.map((track, i) => (
           <div key={i} className="track">
-            <label>id:</label> {track.id} <br />
             <label>label:</label> {track.label} <br />
-            <label>kind:</label> {track.kind} <br />
             <label>enabled:</label> {"" + track.enabled} <br />
             <label>muted:</label> {"" + track.muted} <br />
             <label>readyState:</label> {track.readyState} <br />
           </div>
         ))}
         <button onClick={() => this.getMedia()}>get media</button>
+        <button onClick={() => this.getConstraints()}>get constraints</button>
         {this.state.devices.map((device, i) => (
-          <div className="device">
+          <div key={i} className="device">
             <button onClick={() => this.useDevice(device.deviceId)}>use</button>
             <div key={i} className="deviceInfo">
               <label>label:</label> {device.label} <br />
               <label>kind:</label> {device.kind} <br />
-              <label>group:</label> {device.groupId} <br />
-              <label>device:</label> {device.deviceId} <br />
+            </div>
+          </div>
+        ))}
+        {Object.entries(this.state.constraints).map(([name], i) => (
+          <div key={i} className="constraint">
+            <div key={i} className="constraintInfo">
+              <label>name:</label> {name} <br />
             </div>
           </div>
         ))}
