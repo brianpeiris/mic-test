@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development -w",
-    "build": "rimraf 'bundle-*.{js,js.map}' && webpack --mode production"
+    "prebuild": "rimraf bundle-*",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "react": "^16.8.6",
