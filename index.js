@@ -184,21 +184,25 @@ class Devices extends React.PureComponent {
           <div key={i} className="device">
             <button className="useDevice" onClick={() => setDevice(device.deviceId)}>use</button>
             <div key={i} className="deviceInfo">
-              <label>label:</label>
-              {device.label}
-              <br />
+              <div>
+                <label>label:</label>
+                <span>{device.label}</span>
+              </div>
 
-              <label>kind:</label>
-              <span style={{ backgroundColor: stringToColor(device.kind) }}>{device.kind}</span>
-              <br />
+              <div>
+                <label>kind:</label>
+                <span style={{ backgroundColor: stringToColor(device.kind) }}>{device.kind}</span>
+              </div>
 
-              <label>deviceId:</label>
-              <span style={{ backgroundColor: stringToColor(device.deviceId) }}>{device.deviceId}</span>
-              <br />
+              <div>
+                <label>deviceId:</label>
+                <span style={{ backgroundColor: stringToColor(device.deviceId) }}>{device.deviceId}</span>
+              </div>
 
-              <label>groupId:</label>
-              <span style={{ backgroundColor: stringToColor(device.groupId) }}>{device.groupId}</span>
-              <br />
+              <div>
+                <label>groupId:</label>
+                <span style={{ backgroundColor: stringToColor(device.groupId) }}>{device.groupId}</span>
+              </div>
             </div>
           </div>
         ))}
@@ -334,17 +338,25 @@ class Root extends React.PureComponent {
         <div>{this.state.inputTracks.length === 0 ? "- no input tracks -" : null}</div>
         {this.state.inputTracks.map((track, i) => (
           <div key={i} className="track">
-            <label>label:</label>
-            {track.label} <br />
+            <div>
+              <label>label:</label>
+              <span>{track.label}</span>
+            </div>
 
-            <label>enabled:</label>
-            {String(track.enabled)} <br />
+            <div>
+              <label>enabled:</label>
+              <span>{String(track.enabled)}</span>
+            </div>
 
-            <label>muted:</label>
-            {String(track.muted)} <br />
+            <div>
+              <label>muted:</label>
+              <span>{String(track.muted)}</span>
+            </div>
 
-            <label>readyState:</label>
-            {track.readyState} <br />
+            <div>
+              <label>readyState:</label>
+              <span>{track.readyState}</span>
+            </div>
           </div>
         ))}
 
