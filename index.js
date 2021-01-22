@@ -177,12 +177,12 @@ class Devices extends React.PureComponent {
     const { title, value: devices, setDevice } = this.props;
 
     return (
-      <>
+      <div>
         <h2>{title}:</h2>
         {devices.length === 0 ? "- no devices -" : null}
         {devices.map((device, i) => (
           <div key={i} className="device">
-            <button onClick={() => setDevice(device.deviceId)}>use</button>
+            <button className="useDevice" onClick={() => setDevice(device.deviceId)}>use</button>
             <div key={i} className="deviceInfo">
               <label>label:</label>
               {device.label}
@@ -202,7 +202,7 @@ class Devices extends React.PureComponent {
             </div>
           </div>
         ))}
-      </>
+      </div>
     );
   }
 }
@@ -291,6 +291,12 @@ class Root extends React.PureComponent {
     return (
       <>
         <h1>mic test</h1>
+        
+        <p>
+          A basic set of web audio tests including a local microphone echo test, 
+          audio playback and output selection (where supported). <br />
+          Source code on <a href="https://github.com/brianpeiris/mic-test" target="blank">github</a>.
+        </p>
 
         <div id="status">status: {this.state.status || "-"}</div>
 
@@ -304,6 +310,8 @@ class Root extends React.PureComponent {
           get output devices
         </button>
 
+        <br />
+
         <button onClick={() => this.toggleAudioElement()}>
           {this.state.audioElementPaused ? "play" : "pause"} audio element
         </button>
@@ -311,6 +319,8 @@ class Root extends React.PureComponent {
         <button onClick={() => this.toggleAudioBuffer()}>
           {this.state.audioBufferPaused ? "play" : "pause"} audio buffer
         </button>
+
+        <br />
 
         <button onClick={() => this.recreateContext()}>
           recreate context
@@ -321,7 +331,7 @@ class Root extends React.PureComponent {
         </button>
 
         <h2>input tracks:</h2>
-        {this.state.inputTracks.length === 0 ? "- no input tracks -" : null}
+        <div>{this.state.inputTracks.length === 0 ? "- no input tracks -" : null}</div>
         {this.state.inputTracks.map((track, i) => (
           <div key={i} className="track">
             <label>label:</label>
@@ -351,7 +361,7 @@ class Root extends React.PureComponent {
         />
 
         <h2>constraints:</h2>
-        {Object.entries(this.state.constraints).length === 0 ? "- no constraints -" : null}
+        <div>{Object.entries(this.state.constraints).length === 0 ? "- no constraints -" : null}</div>
         {Object.entries(this.state.constraints).map(([name], i) => (
           <div key={i} className="constraint">
             <div key={i} className="constraintInfo">

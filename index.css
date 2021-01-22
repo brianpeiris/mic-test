@@ -3,8 +3,12 @@ body * {
   font-family: monospace;
 }
 
+p {
+  max-width: 40em;
+}
+
 button {
-  min-width: 4em;
+  min-width: 12em;
   height: 4em;
   border: 1px solid black; 
   margin: 2px;
@@ -18,7 +22,7 @@ button {
   align-items: center;
 }
 
-.device:nth-child(odd) {
+.device:nth-child(even) {
   background: #eee;
 }
 
@@ -47,6 +51,10 @@ label {
   display: inline-block;
   margin-bottom: 2px;
   margin-right: 1em;
+}
+
+.useDevice {
+  min-width: 4em;
 }
 
 video {
