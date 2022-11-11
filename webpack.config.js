@@ -14,9 +14,13 @@ module.exports = {
     ]
   },
   entry: "./index.js",
-  output: { path: __dirname, filename: "bundle-[hash].js" },
+  output: { path: __dirname, filename: "bundle-[fullhash].js" },
   devtool: "source-map",
-  devServer: { host: "0.0.0.0", disableHostCheck: true, https: true },
+  devServer: {
+    host: "0.0.0.0",
+    https: true,
+    static: '.'
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: "mic test",
