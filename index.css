@@ -2,6 +2,9 @@ body,
 body * {
   font-family: monospace;
 }
+body {
+  margin: 20px;
+}
 
 p {
   max-width: 40em;
@@ -14,6 +17,11 @@ button {
   margin: 2px;
   border-radius: 2px;
   background: #ddd;
+  font-size: 12px;
+}
+
+.echoCancellationButton {
+  min-width: 17em;
 }
 
 .device {

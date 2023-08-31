@@ -6,6 +6,13 @@ class AudioDeviceManager {
   constructor() {
     this.currentInputDevice = null;
     this.currentOutputDevice = null;
+    this.outputNode = null;
+    this.analyser = null;
+    this.audioBuffer = null;
+    this.decodedAudioData = null;
+    this.delayNode = null;
+    this.delayEnabled = false;
+    this.echoCancellationEnabled = false;
 
     this.audioElement = document.createElement("audio");
     this.audioElement.src = "guitar.mp3";
@@ -80,9 +87,19 @@ class AudioDeviceManager {
       }
     }
 
-    this.inputStream = await navigator.mediaDevices.getUserMedia({ audio: { deviceId } });
+    this.inputStream = await navigator.mediaDevices.getUserMedia({
+      audio: { deviceId, echoCancellation: this.echoCancellationEnabled },
+    });
+
     this.currentSource = this.ctx.createMediaStreamSource(this.inputStream);
-    this.currentSource.connect(this.analyser);
+    this.delayNode = new DelayNode(this.ctx, { delayTime: 1 });
+
+    if (this.delayEnabled) {
+      this.currentSource.connect(this.delayNode);
+      this.delayNode.connect(this.analyser);
+    } else {
+      this.currentSource.connect(this.analyser);
+    }
   }
 
   async setOutputDevice(deviceId) {
@@ -149,17 +166,44 @@ class AudioDeviceManager {
       return false;
     }
   }
+
+  toggleDelay() {
+    if (this.delayEnabled) {
+      if (this.currentSource) {
+        this.currentSource.disconnect();
+        this.delayNode.disconnect();
+        this.currentSource.connect(this.analyser);
+      }
+      this.delayEnabled = false;
+    } else {
+      if (this.currentSource) {
+        this.currentSource.disconnect();
+        this.currentSource.connect(this.delayNode);
+        this.delayNode.connect(this.analyser);
+      }
+      this.delayEnabled = true;
+    }
+    return this.delayEnabled;
+  }
+
+  toggleEchoCancellation() {
+    this.echoCancellationEnabled = !this.echoCancellationEnabled;
+    if (this.currentInputDevice) {
+      this.setInputDevice(this.currentInputDevice);
+    }
+    return this.echoCancellationEnabled;
+  }
 }
 
 class AudioMeter extends React.Component {
   state = {
-    value: 0
-  }
+    value: 0,
+  };
   updateValue = () => {
     const value = this.props.audioDeviceManager.getAnalyserLevel();
     this.setState({ value });
     window.requestAnimationFrame(this.updateValue);
-  }
+  };
   componentDidMount() {
     requestAnimationFrame(this.updateValue);
   }
@@ -182,7 +226,9 @@ class Devices extends React.PureComponent {
         {devices.length === 0 ? "- no devices -" : null}
         {devices.map((device, i) => (
           <div key={i} className="device">
-            <button className="useDevice" onClick={() => setDevice(device.deviceId)}>use</button>
+            <button className="useDevice" onClick={() => setDevice(device.deviceId)}>
+              use
+            </button>
             <div key={i} className="deviceInfo">
               <div>
                 <label>label:</label>
@@ -229,6 +275,8 @@ class Root extends React.PureComponent {
     meter: 0,
     audioElementPaused: true,
     audioBufferPaused: true,
+    delayEnabled: false,
+    echoCancellationEnabled: false,
   };
 
   audioDeviceManager = new AudioDeviceManager();
@@ -276,12 +324,22 @@ class Root extends React.PureComponent {
 
   toggleAudioElement() {
     this.audioDeviceManager.toggleAudioElement();
-    this.setState((state) => ({audioElementPaused: !state.audioElementPaused}));
+    this.setState((state) => ({ audioElementPaused: !state.audioElementPaused }));
   }
 
   async toggleAudioBuffer() {
     const audioBufferPaused = await this.audioDeviceManager.toggleAudioBuffer();
     this.setState({ audioBufferPaused });
+  }
+
+  async toggleDelay() {
+    const delayEnabled = await this.audioDeviceManager.toggleDelay();
+    this.setState({ delayEnabled });
+  }
+
+  async toggleEchoCancellation() {
+    const echoCancellationEnabled = await this.audioDeviceManager.toggleEchoCancellation();
+    this.setState({ echoCancellationEnabled });
   }
 
   recreateContext() {
@@ -295,24 +353,24 @@ class Root extends React.PureComponent {
     return (
       <>
         <h1>mic test</h1>
-        
+
         <p>
-          A basic set of web audio tests including a local microphone echo test, 
-          audio playback and output selection (where supported). <br />
-          Source code on <a href="https://github.com/brianpeiris/mic-test" target="blank">github</a>.
+          A basic set of web audio tests including a local microphone echo test, audio playback and output selection
+          (where supported). <br />
+          Source code on{" "}
+          <a href="https://github.com/brianpeiris/mic-test" target="blank">
+            github
+          </a>
+          .
         </p>
 
         <div id="status">status: {this.state.status || "-"}</div>
 
         <AudioMeter audioDeviceManager={this.audioDeviceManager} />
 
-        <button onClick={() => this.getDevices("audioinput", "inputDevices")}>
-          get input devices
-        </button>
+        <button onClick={() => this.getDevices("audioinput", "inputDevices")}>get input devices</button>
 
-        <button onClick={() => this.getDevices("audiooutput", "outputDevices")}>
-          get output devices
-        </button>
+        <button onClick={() => this.getDevices("audiooutput", "outputDevices")}>get output devices</button>
 
         <br />
 
@@ -326,12 +384,16 @@ class Root extends React.PureComponent {
 
         <br />
 
-        <button onClick={() => this.recreateContext()}>
-          recreate context
-        </button>
+        <button onClick={() => this.recreateContext()}>recreate context</button>
 
-        <button onClick={() => this.getConstraints()}>
-          get constraints
+        <button onClick={() => this.getConstraints()}>get constraints</button>
+
+        <br />
+
+        <button onClick={() => this.toggleDelay()}>{this.state.delayEnabled ? "remove" : "add"} delay</button>
+
+        <button onClick={() => this.toggleEchoCancellation()} className="echoCancellationButton">
+          {this.state.echoCancellationEnabled ? "disable" : "enable"} echo cancellation
         </button>
 
         <h2>input tracks:</h2>
