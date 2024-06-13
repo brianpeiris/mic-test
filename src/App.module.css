@@ -1,0 +1,108 @@
+body,
+body * {
+  font-family: monospace;
+}
+body {
+  margin: 20px;
+}
+
+p {
+  max-width: 40em;
+}
+
+button {
+  min-width: 13em;
+  height: 4em;
+  border: 1px solid black;
+  margin: 2px;
+  border-radius: 2px;
+  background: #ddd;
+  font-size: 12px;
+}
+
+.echoCancellationButton {
+  min-width: 17em;
+}
+
+.device {
+  display: flex;
+  padding: 0.5em;
+  align-items: center;
+}
+
+.device:nth-child(even) {
+  background: #eee;
+}
+
+.deviceInfo {
+  margin-left: 1em;
+}
+
+.deviceInfo > div {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.track > div {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.deviceInfo span {
+  overflow-wrap: anywhere;
+}
+
+.meter {
+  width: 10em;
+  height: 1em;
+  border: 1px solid black;
+}
+
+.bar {
+  height: 100%;
+  background: green;
+}
+
+.app > * {
+  margin-bottom: 1em;
+}
+
+label {
+  min-width: 7em;
+  text-align: right;
+  display: inline-block;
+  margin-bottom: 2px;
+  margin-right: 1em;
+}
+
+.useDevice {
+  min-width: 4em;
+}
+
+video {
+  width: 200px;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #111;
+    color: #eee;
+  }
+
+  a {
+    color: #eee;
+  }
+
+  button {
+    background: #333;
+    color: #eee;
+  }
+
+  .meter {
+    border: 1px solid #eee;
+  }
+
+  .device:nth-child(even) {
+    background: #444;
+  }
+}
